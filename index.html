@@ -2,56 +2,72 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Plataforma de RendimentosSKS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Plataforma de Investimentos</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <section id="login-section">
-            <h2>Acessar Plataforma</h2>
-            <input type="text" id="user" placeholder="Usuário">
-            <input type="password" id="pass" placeholder="Senha">
-            <button onclick="fazerLogin()">Entrar</button>
+
+    <div id="caixa-principal">
+        
+        <section id="tela-login">
+            <h1>Login</h1>
+            <p>Entre para gerenciar seus lucros</p>
+            <input type="text" id="campo-usuario" placeholder="Nome de Usuário">
+            <input type="password" id="campo-senha" placeholder="Sua Senha">
+            <button onclick="entrarNoSite()">Acessar Painel</button>
         </section>
 
-        <section id="dashboard" style="display: none;">
-            <h2>Bem-vindo, <span id="username-display"></span></h2>
-            <div class="card-saldo">
-                <p>Seu Saldo Total:</p>
-                <h3 id="saldo">R$ 0,00</h3>
+        <section id="painel-usuario" style="display: none;">
+            <h2>Olá, <span id="nome-cliente"></span>!</h2>
+            
+            <div class="cartao-saldo">
+                <span>Seu Saldo Atual</span>
+                <h3 id="valor-saldo">R$ 0,00</h3>
             </div>
-            <div class="investimento-info">
-                <p>Plano: <strong>Deposite R$ 60 e ganhe R$ 3.50/dia</strong></p>
-                <button onclick="gerarPix()">Depositar via PIX</button>
+
+            <h3>Escolha um Plano de Investimento:</h3>
+
+            <div class="lista-planos">
+                <div class="plano">
+                    <h4>PLANO START</h4>
+                    <p>Custo: <strong>R$ 60</strong></p>
+                    <p class="lucro">Rende R$ 5,00/dia</p>
+                    <button onclick="pagar(60)">Investir Agora</button>
+                </div>
+
+                <div class="plano destaque">
+                    <div class="etiqueta">POPULAR</div>
+                    <h4>PLANO PRATA</h4>
+                    <p>Custo: <strong>R$ 150</strong></p>
+                    <p class="lucro">Rende R$ 13,00/dia</p>
+                    <button onclick="pagar(150)">Investir Agora</button>
+                </div>
+
+                <div class="plano">
+                    <h4>PLANO OURO</h4>
+                    <p>Custo: <strong>R$ 300</strong></p>
+                    <p class="lucro">Rende R$ 28,00/dia</p>
+                    <button onclick="pagar(300)">Investir Agora</button>
+                </div>
+
+                <div class="plano">
+                    <h4>PLANO VIP</h4>
+                    <p>Custo: <strong>R$ 600</strong></p>
+                    <p class="lucro">Rende R$ 60,00/dia</p>
+                    <button onclick="pagar(600)">Investir Agora</button>
+                </div>
+
+                <div class="plano diamante">
+                    <h4>PLANO DIAMANTE</h4>
+                    <p>Custo: <strong>R$ 1.000</strong></p>
+                    <p class="lucro">Rende R$ 110,00/dia</p>
+                    <button onclick="pagar(1000)">Investir Agora</button>
+                </div>
             </div>
         </section>
     </div>
+
     <script src="script.js"></script>
-
-    <h3>Escolha seu Plano</h3>
-    <div class="planos-container">
-        <div class="plano-card">
-            <h4>Bronze</h4>
-            <p>Invista: <strong>R$ 60</strong></p>
-            <p class="rendimento">Rende: R$ 5,00 /dia</p>
-            <button onclick="gerarPix(60)">Contratar</button>
-        </div>
-
-        <div class="plano-card destaque">
-            <span class="badge">Popular</span>
-            <h4>Prata</h4>
-            <p>Invista: <strong>R$ 150</strong></p>
-            <p class="rendimento">Rende: R$ 13,00 /dia</p>
-            <button onclick="gerarPix(150)">Contratar</button>
-        </div>
-
-        <div class="plano-card">
-            <h4>Ouro</h4>
-            <p>Invista: <strong>R$ 500</strong></p>
-            <p class="rendimento">Rende: R$ 45,00 /dia</p>
-            <button onclick="gerarPix(500)">Contratar</button>
-        </div>
-    </div>
-</section>
 </body>
 </html>
