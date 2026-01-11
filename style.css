@@ -1,105 +1,91 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
+/* Configurações Gerais */
 body {
-  background: radial-gradient(circle at top left, #1f3b4d, #0a0f1f);
-  color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 }
 
-/* Corrige altura no iOS e Android */
-.wrapper {
-  min-height: 100dvh;
-  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#caixa-principal {
+    width: 100%;
+    max-width: 800px;
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    text-align: center;
 }
 
-/* Card nunca quebra a tela */
-.card {
-  width: 100%;
-  max-width: 420px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px);
-  border-radius: 18px;
-  padding: 24px;
-}
-
-/* Textos */
-h1 {
-  font-size: 24px;
-  margin-bottom: 6px;
-}
-
-.subtitle {
-  font-size: 14px;
-  color: #d1d1d1;
-  margin-bottom: 18px;
-}
-
-/* Form */
-label {
-  display: block;
-  font-size: 14px;
-  margin-top: 14px;
-}
-
+/* Campos de Digitar e Botões */
 input {
-  width: 100%;
-  margin-top: 6px;
-  padding: 14px;
-  font-size: 16px; /* evita zoom no iPhone */
-  border-radius: 10px;
-  border: none;
-  background: rgba(255,255,255,0.15);
-  color: #fff;
+    width: 80%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #222;
+    color: white;
 }
 
-input::placeholder {
-  color: #ccc;
-}
-
-.terms {
-  font-size: 12px;
-  margin: 16px 0;
-}
-
-.terms a {
-  color: #4dd0e1;
-  text-decoration: none;
-}
-
-/* Botão grande pra dedo */
 button {
-  width: 100%;
-  padding: 16px;
-  border-radius: 14px;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  background: linear-gradient(90deg, #4dd0e1, #ff5fcf);
-  color: #000;
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 85%;
 }
 
-/* Login */
-.login {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 14px;
+/* Cartão de Saldo */
+.cartao-saldo {
+    background: linear-gradient(45deg, #1d1d1d, #333);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 1px solid #00ff4444;
 }
 
-.login a {
-  color: #4dd0e1;
-  text-decoration: none;
+#valor-saldo {
+    font-size: 2em;
+    color: #00ff44;
+    margin: 10px 0;
 }
 
-/* Desktop (opcional) */
-@media (min-width: 768px) {
-  .card {
-    padding: 32px;
-  }
+/* Grade de Planos */
+.lista-planos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.plano {
+    background: #252525;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    position: relative;
+}
+
+.plano.destaque { border: 2px solid #28a745; }
+.plano.diamante { border: 2px solid #00d4ff; }
+
+.lucro {
+    color: #00ff44;
+    font-weight: bold;
+}
+
+.etiqueta {
+    background: #28a745;
+    font-size: 10px;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 10px;
+    border-radius: 5px;
 }
