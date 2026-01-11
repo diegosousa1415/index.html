@@ -1,30 +1,21 @@
-// Captura o ?ref= da URL
-const params = new URLSearchParams(window.location.search);
-const refCode = params.get("ref");
+// Função para simular o login
+function entrarNoSite() {
+    const usuario = document.getElementById('campo-usuario').value;
+    const senha = document.getElementById('campo-senha').value;
 
-if (refCode) {
-  document.getElementById("ref").value = refCode;
+    if (usuario !== "" && senha !== "") {
+        // Esconde a tela de login e mostra o painel
+        document.getElementById('tela-login').style.display = 'none';
+        document.getElementById('painel-usuario').style.display = 'block';
+        
+        // Coloca o nome do usuário na tela
+        document.getElementById('nome-cliente').innerText = usuario;
+    } else {
+        alert("Por favor, preencha o usuário e a senha!");
+    }
 }
 
-document.getElementById("formCadastro").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const affiliateCode = Math.random()
-    .toString(36)
-    .substring(2, 8)
-    .toUpperCase();
-
-  const link =
-    window.location.origin +
-    window.location.pathname +
-    "?ref=" +
-    affiliateCode;
-
-  alert(
-    "Cadastro criado!\n\n" +
-    "Seu código de afiliado:\n" +
-    affiliateCode +
-    "\n\nSeu link:\n" +
-    link
-  );
-});
+// Função para o botão de investimento
+function pagar(valor) {
+    alert("Você escolheu o plano de R$ " + valor + ". \n\nSistema: Aguardando integração com o PIX...");
+}
