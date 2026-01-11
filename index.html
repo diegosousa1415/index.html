@@ -1,90 +1,57 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Criar conta</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Plataforma de RendimentosSKS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="app">
+        <section id="login-section">
+            <h2>Acessar Plataforma</h2>
+            <input type="text" id="user" placeholder="Usuário">
+            <input type="password" id="pass" placeholder="Senha">
+            <button onclick="fazerLogin()">Entrar</button>
+        </section>
 
-<main class="wrapper">
-  <section class="card">
-    <h1>Criar conta</h1>
-    <p class="subtitle">Cadastre-se para acessar a plataforma.</p>
+        <section id="dashboard" style="display: none;">
+            <h2>Bem-vindo, <span id="username-display"></span></h2>
+            <div class="card-saldo">
+                <p>Seu Saldo Total:</p>
+                <h3 id="saldo">R$ 0,00</h3>
+            </div>
+            <div class="investimento-info">
+                <p>Plano: <strong>Deposite R$ 60 e ganhe R$ 3.50/dia</strong></p>
+                <button onclick="gerarPix()">Depositar via PIX</button>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
 
-    <form id="formCadastro">
-      <label>Nome completo</label>
-      <input type="text" placeholder="Seu nome" required>
+    <h3>Escolha seu Plano</h3>
+    <div class="planos-container">
+        <div class="plano-card">
+            <h4>Bronze</h4>
+            <p>Invista: <strong>R$ 60</strong></p>
+            <p class="rendimento">Rende: R$ 5,00 /dia</p>
+            <button onclick="gerarPix(60)">Contratar</button>
+        </div>
 
-      <label>Email</label>
-      <input type="email" placeholder="voce@email.com" required>
+        <div class="plano-card destaque">
+            <span class="badge">Popular</span>
+            <h4>Prata</h4>
+            <p>Invista: <strong>R$ 150</strong></p>
+            <p class="rendimento">Rende: R$ 13,00 /dia</p>
+            <button onclick="gerarPix(150)">Contratar</button>
+        </div>
 
-      <label>Senha</label>
-      <input type="password" placeholder="••••••••" required>
-
-      <label>Confirmar senha</label>
-      <input type="password" placeholder="••••••••" required>
-
-      <label>Código de indicação (opcional)</label>
-      <input type="text" id="ref" placeholder="Opcional">
-
-      <p class="terms">
-        Ao continuar, você concorda com os <a href="#">Termos</a>.
-      </p>
-
-      <button type="submit">Cadastrar</button>
-    </form>
-
-    <p class="login">
-      Já tem conta? <a href="#">Entrar</a>
-    </p>
-  </section>
-</main>
-
-<script src="script.js"></script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Produtos</title>
-  <link rel="stylesheet" href="produtos.css">
-</head>
-<body>
-
-<header class="topbar">
-  <h1>Produtos</h1>
-</header>
-
-<main class="content">
-
-  <div class="product-card">
-    <h2>Plano Básico</h2>
-    <p>Acesso inicial à plataforma</p>
-    <span>R$ 29,90</span>
-    <button>Comprar</button>
-  </div>
-
-  <div class="product-card">
-    <h2>Plano Pro</h2>
-    <p>Ferramentas avançadas</p>
-    <span>R$ 97,00</span>
-    <button>Comprar</button>
-  </div>
-
-  <div class="product-card">
-    <h2>Plano Premium</h2>
-    <p>Acesso total + afiliado</p>
-    <span>R$ 197,00</span>
-    <button>Comprar</button>
-  </div>
-
-</main>
-
-<script src="produtos.js"></script>
+        <div class="plano-card">
+            <h4>Ouro</h4>
+            <p>Invista: <strong>R$ 500</strong></p>
+            <p class="rendimento">Rende: R$ 45,00 /dia</p>
+            <button onclick="gerarPix(500)">Contratar</button>
+        </div>
+    </div>
+</section>
 </body>
 </html>
