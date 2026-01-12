@@ -2,9 +2,7 @@
 let saldoGeral = parseFloat(localStorage.getItem('saldoJN')) || 0;
 
 function atualizarTela() {
-    // Atualiza o valor na tela do site
     document.getElementById('valor-saldo').innerText = "R$ " + saldoGeral.toFixed(2);
-    // Salva na memória do navegador para não sumir ao atualizar
     localStorage.setItem('saldoJN', saldoGeral);
 }
 
@@ -21,54 +19,47 @@ function entrarNoSite() {
     }
 }
 
-// Função de Depósito com seu link do Mercado Pago
+// FUNÇÃO DE DEPÓSITO (ABRE O MERCADO PAGO)
 function depositar() {
     const valor = parseFloat(document.getElementById('valor-deposito').value);
     
     if (valor >= 60) {
-        // Seu link real do Mercado Pago
         const linkMercadoPago = "https://mpago.la/1S7yFMw"; 
 
-        alert("Redirecionando para o Pagamento de R$ " + valor.toFixed(2));
+        alert("REDIRECIONANDO...\n\n1. Pague o PIX no Mercado Pago.\n2. Tire um print do comprovante.\n3. Clique no botão verde 'Confirmar no WhatsApp' para eu liberar seu saldo.");
         
-        // Abre o seu link do Mercado Pago em uma nova aba
+        // Abre o Mercado Pago
         window.open(linkMercadoPago, '_blank');
-
-        alert("Após pagar, o saldo cairá automaticamente em sua conta em instantes.");
-
-        // Simulação: Adiciona o saldo após 5 segundos (tempo do cliente pagar)
-        setTimeout(() => {
-            saldoGeral += valor;
-            atualizarTela();
-            alert("Sucesso! O depósito de R$ " + valor.toFixed(2) + " foi creditado.");
-        }, 5000); 
-
     } else {
         alert("O valor mínimo de depósito é R$ 60,00");
     }
 }
 
-// Função para comprar os planos
+// FUNÇÃO PARA CONFIRMAR PAGAMENTO COM VOCÊ
+function confirmarNoWhatsapp() {
+    const meuNumero = "5589994222704"; // SEU NÚMERO CONFIGURADO
+    const texto = "Olá JN LUXS, acabei de fazer um depósito de R$ 60 e quero meu saldo. Segue o comprovante:";
+    window.open("https://wa.me/" + meuNumero + "?text=" + encodeURI(texto));
+}
+
+// Comprar Planos
 function comprarPlano(custo, rendimento) {
     if (saldoGeral >= custo) {
         saldoGeral -= custo;
         atualizarTela();
-        alert("Plano ativado com sucesso! Você receberá R$ " + rendimento.toFixed(2) + " por dia.");
-        
-        // Inicia o rendimento automático para este usuário
-        iniciarRendimento(rendimento);
+        alert("Plano ativado com sucesso! Seus rendimentos começaram.");
     } else {
-        alert("Saldo insuficiente! Deposite pelo menos R$ " + (custo - saldoGeral).toFixed(2));
+        alert("Saldo insuficiente! Deposite primeiro para ativar este plano.");
     }
 }
 
-// Função de Saque
+// Saque
 function sacar() {
     const chave = document.getElementById('chave-pix').value;
     const valor = parseFloat(document.getElementById('valor-saque').value);
 
-    if (chave === "") {
-        alert("Informe sua chave PIX!");
+    if (chave === "" || isNaN(valor)) {
+        alert("Preencha a chave PIX e o valor!");
         return;
     }
 
@@ -76,21 +67,11 @@ function sacar() {
         if (saldoGeral >= valor) {
             saldoGeral -= valor;
             atualizarTela();
-            alert("Saque solicitado para a chave " + chave + "!\nO prazo para cair na conta é de 24h.");
+            alert("Saque de R$ " + valor.toFixed(2) + " solicitado!\nEnvie o comprovante no WhatsApp para agilizar.");
         } else {
-            alert("Saldo insuficiente para este saque!");
+            alert("Você não tem saldo suficiente.");
         }
     } else {
         alert("O valor mínimo de saque é R$ 20,00");
     }
-}
-
-// FUNÇÃO EXTRA: Faz o dinheiro render enquanto o site estiver aberto
-function iniciarRendimento(valorDiario) {
-    // Para teste rápido: rende um pouco a cada 30 segundos
-    setInterval(() => {
-        let rendimentoPorMinuto = valorDiario / 1440; // divide o ganho do dia por minutos
-        saldoGeral += rendimentoPorMinuto;
-        atualizarTela();
-    }, 30000); 
 }
