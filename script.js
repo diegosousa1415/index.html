@@ -119,3 +119,9 @@ window.comprarPlano = async (custo, rend) => {
 
 window.depositar = () => { /* Mantém lógica anterior de Pix */ };
 window.copiarLink = () => { document.getElementById('link-afiliado').select(); document.execCommand("copy"); alert("Link copiado!"); };
+
+window.chamarSuporte = () => {
+    const msg = "Olá! Gostaria de um atendimento VIP na JN LUXS INVEST.";
+    window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
+};
+
