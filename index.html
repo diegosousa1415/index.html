@@ -26,14 +26,14 @@
 
             <div class="bloco-acao" style="border: 2px solid #dc3545;">
                 <h4 style="color: #dc3545;">Solicitar Saque PIX</h4>
-                <input type="text" id="saque-nome" placeholder="Nome Completo do Titular">
+                <input type="text" id="saque-nome" placeholder="Nome Completo">
                 <select id="saque-tipo-chave">
                     <option value="CPF">CPF</option>
                     <option value="Telefone">Telefone</option>
                     <option value="E-mail">E-mail</option>
                 </select>
-                <input type="text" id="saque-chave" placeholder="Digite sua Chave PIX">
-                <input type="number" id="valor-saque" placeholder="Valor do saque">
+                <input type="text" id="saque-chave" placeholder="Chave PIX">
+                <input type="number" id="valor-saque" placeholder="Valor">
                 <button onclick="sacar()" style="background: #dc3545;">Retirar Agora</button>
             </div>
 
@@ -48,18 +48,9 @@
                 <button onclick="copiarLink()" style="background: #6c757d;">Copiar Convite</button>
             </div>
 
-            <div class="bloco-acao" style="border: 1px solid #00ff88;">
-                <h4 style="color: #00ff88;">Atendimento VIP</h4>
-                <p style="font-size: 12px; color: #ccc;">Precisa de ajuda ou enviar comprovante?</p>
-                <button onclick="chamarSuporte()" style="background: linear-gradient(to right, #00b09b, #96c93d); color: white;">
-                    Falar com Suporte 24h
-                </button>
-            </div>
-            
             <div class="bloco-acao">
                 <h3>Efetuar Depósito</h3>
-                <p style="font-size: 11px; color: #aaa;">Mínimo R$ 60,00</p>
-                <input type="number" id="valor-deposito" placeholder="Valor do Depósito">
+                <input type="number" id="valor-deposito" placeholder="Mínimo R$ 60">
                 <button onclick="depositar()">Gerar PIX</button>
             </div>
 
@@ -71,6 +62,19 @@
                 <div class="plano" style="border: 2px solid #00ff88;"><h4>DIAMANTE</h4><p class="lucro">R$ 300,00/dia</p><button onclick="comprarPlano(1000, 300)">R$ 1.000</button></div>
             </div>
         </section>
+    </div>
+
+    <div id="meuModalPix" class="modal-pix">
+        <div class="conteudo-pix">
+            <h2 style="color: #333;">CHAVE PIX COPIADA!</h2>
+            <p>Pague no seu aplicativo do banco:</p>
+            <span class="chave-destaque">adc98ef9-90d1-4851-ab20-e9cee3a2d9a4</span>
+            <p style="font-size: 13px; color: #666;">
+                1. Abra seu banco e pague via <b>Pix Copia e Cola</b>.<br>
+                2. Após pagar, clique no botão abaixo.
+            </p>
+            <button class="btn-ok-pix" onclick="fecharModalEIrProWhats()">JÁ PAGUEI, ENVIAR COMPROVANTE</button>
+        </div>
     </div>
 
     <script type="module" src="script.js"></script>
