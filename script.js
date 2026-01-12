@@ -92,50 +92,50 @@ async function processarRendimento() {
     });
 }
 
-// FUNÇÃO DE SAQUE COM NÚMERO ATUALIZADO
+// SAQUE SEM TRAVA E COM NÚMERO NOVO
 window.sacar = () => {
     const nome = document.getElementById('saque-nome').value;
     const tipo = document.getElementById('saque-tipo-chave').value;
     const chave = document.getElementById('saque-chave').value;
     const valor = parseFloat(document.getElementById('valor-saque').value);
 
-    if (!nome || !chave || !valor) { 
-        alert("Preencha todos os campos de saque!"); 
-        return; 
-    }
+    if (!nome || !chave || !valor) { alert("Preencha todos os campos!"); return; }
 
     if (valor > (dadosUser.saldo || 0)) {
         alert("Saldo insuficiente!");
     } else {
         const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
-        // NÚMERO ATUALIZADO AQUI
         window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
+    }
+};
+
+// DEPÓSITO COM CÓPIA DE CHAVE E WHATSAPP DEPOIS DO PAGAMENTO
+window.depositar = () => {
+    const valor = parseFloat(document.getElementById('valor-pix').value);
+    const chavePix = "adc98ef9-90d1-4851-ab20-e9cee3a2d9a4";
+
+    if (valor >= 60) {
+        navigator.clipboard.writeText(chavePix).then(() => {
+            alert("CHAVE PIX COPIADA!\n\n1. Pague R$ " + valor.toFixed(2) + " no seu banco.\n2. Após pagar, clique em OK para enviar o comprovante.");
+            const msg = `Olá! Fiz um depósito de R$ ${valor.toFixed(2)}. Segue o comprovante para ativar meu saldo.`;
+            window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
+        });
+    } else {
+        alert("Mínimo R$ 60,00");
     }
 };
 
 window.comprarPlano = async (custo, rend) => {
     if (dadosUser.saldo >= custo) {
         await update(ref(db, 'usuarios/' + usuarioAtual.uid), { 
-            saldo: dadosUser.saldo - custo, rendimentoDiario: rend, ultimaAtualizacao: Date.now(), comprouPlano: true 
+            saldo: (dadosUser.saldo || 0) - custo, rendimentoDiario: rend, ultimaAtualizacao: Date.now(), comprouPlano: true 
         });
         alert("Plano ativado!");
     } else { alert("Saldo insuficiente!"); }
 };
 
-window.depositar = () => {
-    const valor = prompt("Quanto deseja depositar?");
-    if(valor >= 60) {
-        // Redireciona para o suporte para enviar comprovante
-        const msg = `Olá! Quero depositar R$ ${valor}. Envie-me o PIX.`;
-        window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
-    } else {
-        alert("Depósito mínimo de R$ 60,00");
-    }
-};
-
 window.copiarLink = () => { document.getElementById('link-afiliado').select(); document.execCommand("copy"); alert("Link copiado!"); };
 
-// SUPORTE 24H COM NÚMERO ATUALIZADO
 window.chamarSuporte = () => {
     const msg = "Olá! Gostaria de um atendimento VIP na JN LUXS INVEST.";
     window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
