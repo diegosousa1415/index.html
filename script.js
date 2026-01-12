@@ -1,4 +1,3 @@
-// Carrega o saldo salvo no navegador ou começa com 0
 let saldoGeral = parseFloat(localStorage.getItem('saldoJN')) || 0;
 
 function atualizarTela() {
@@ -6,7 +5,6 @@ function atualizarTela() {
     localStorage.setItem('saldoJN', saldoGeral);
 }
 
-// Função de Login
 function entrarNoSite() {
     const user = document.getElementById('campo-usuario').value;
     if (user !== "") {
@@ -15,63 +13,58 @@ function entrarNoSite() {
         document.getElementById('nome-cliente').innerText = user;
         atualizarTela();
     } else {
-        alert("Digite um nome de usuário!");
+        alert("Digite um usuário!");
     }
 }
 
-// FUNÇÃO DE DEPÓSITO (ABRE O MERCADO PAGO)
 function depositar() {
     const valor = parseFloat(document.getElementById('valor-deposito').value);
-    
     if (valor >= 60) {
-        const linkMercadoPago = "https://mpago.la/1S7yFMw"; 
+        const chavePix = "01f92187-bc64-4c33-b5e9-c9d563e9b966"; 
+        const pixPayload = `00020101021126580014br.gov.bcb.pix0136${chavePix}5204000053039865405${valor.toFixed(2)}5802BR5915JN_LUXS_INVEST6008BRASILIA62070503***6304`;
 
-        alert("REDIRECIONANDO...\n\n1. Pague o PIX no Mercado Pago.\n2. Tire um print do comprovante.\n3. Clique no botão verde 'Confirmar no WhatsApp' para eu liberar seu saldo.");
-        
-        // Abre o Mercado Pago
-        window.open(linkMercadoPago, '_blank');
+        document.getElementById('area-pix').style.display = 'block';
+        document.getElementById('pix-copia-cola').value = pixPayload;
+
+        const qrCodeUrl = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(pixPayload)}`;
+        document.getElementById('qrcode-img').innerHTML = `<img src="${qrCodeUrl}" style="width: 180px;">`;
+
+        alert("QR Code Gerado! Pague e confirme no WhatsApp.");
     } else {
-        alert("O valor mínimo de depósito é R$ 60,00");
+        alert("O valor mínimo é R$ 60,00");
     }
 }
 
-// FUNÇÃO PARA CONFIRMAR PAGAMENTO COM VOCÊ
-function confirmarNoWhatsapp() {
-    const meuNumero = "5589994222704"; // SEU NÚMERO CONFIGURADO
-    const texto = "Olá JN LUXS, acabei de fazer um depósito de R$ 60 e quero meu saldo. Segue o comprovante:";
-    window.open("https://wa.me/" + meuNumero + "?text=" + encodeURI(texto));
+function copiarPix() {
+    const copiaTexto = document.getElementById('pix-copia-cola');
+    copiaTexto.select();
+    document.execCommand("copy");
+    alert("Código copiado!");
 }
 
-// Comprar Planos
+function confirmarNoWhatsapp() {
+    const msg = "Olá, acabei de fazer um depósito no JN LUXS. Aqui está meu comprovante:";
+    window.open(`https://wa.me/5589994222704?text=${encodeURIComponent(msg)}`);
+}
+
 function comprarPlano(custo, rendimento) {
     if (saldoGeral >= custo) {
         saldoGeral -= custo;
         atualizarTela();
-        alert("Plano ativado com sucesso! Seus rendimentos começaram.");
+        alert(`Plano ativado! Rende R$ ${rendimento} por dia.`);
     } else {
-        alert("Saldo insuficiente! Deposite primeiro para ativar este plano.");
+        alert("Saldo insuficiente!");
     }
 }
 
-// Saque
 function sacar() {
-    const chave = document.getElementById('chave-pix').value;
+    const chave = document.getElementById('chave-pix-saque').value;
     const valor = parseFloat(document.getElementById('valor-saque').value);
-
-    if (chave === "" || isNaN(valor)) {
-        alert("Preencha a chave PIX e o valor!");
-        return;
-    }
-
-    if (valor >= 20) {
-        if (saldoGeral >= valor) {
-            saldoGeral -= valor;
-            atualizarTela();
-            alert("Saque de R$ " + valor.toFixed(2) + " solicitado!\nEnvie o comprovante no WhatsApp para agilizar.");
-        } else {
-            alert("Você não tem saldo suficiente.");
-        }
+    if (chave === "" || valor < 20 || valor > saldoGeral) {
+        alert("Verifique a chave, valor mínimo (20) ou saldo.");
     } else {
-        alert("O valor mínimo de saque é R$ 20,00");
+        saldoGeral -= valor;
+        atualizarTela();
+        alert("Pedido de saque enviado!");
     }
 }
