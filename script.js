@@ -92,9 +92,8 @@ async function processarRendimento() {
     });
 }
 
-// FUNÇÃO DE SAQUE SEM TRAVA DE DEPÓSITO/PLANO
+// FUNÇÃO DE SAQUE COM NÚMERO ATUALIZADO
 window.sacar = () => {
-    // Pegando os IDs conforme aparecem na sua tela de Solicitar Saque PIX
     const nome = document.getElementById('saque-nome').value;
     const tipo = document.getElementById('saque-tipo-chave').value;
     const chave = document.getElementById('saque-chave').value;
@@ -105,12 +104,11 @@ window.sacar = () => {
         return; 
     }
 
-    // Mantida apenas a trava de saldo real disponível
     if (valor > (dadosUser.saldo || 0)) {
         alert("Saldo insuficiente!");
     } else {
         const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
-        // Enviando para o seu novo número atualizado
+        // NÚMERO ATUALIZADO AQUI
         window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
     }
 };
@@ -120,14 +118,24 @@ window.comprarPlano = async (custo, rend) => {
         await update(ref(db, 'usuarios/' + usuarioAtual.uid), { 
             saldo: dadosUser.saldo - custo, rendimentoDiario: rend, ultimaAtualizacao: Date.now(), comprouPlano: true 
         });
-        alert("Plano ativado com sucesso!");
+        alert("Plano ativado!");
     } else { alert("Saldo insuficiente!"); }
 };
 
-window.depositar = () => { /* Sua lógica de PIX aqui */ };
+window.depositar = () => {
+    const valor = prompt("Quanto deseja depositar?");
+    if(valor >= 60) {
+        // Redireciona para o suporte para enviar comprovante
+        const msg = `Olá! Quero depositar R$ ${valor}. Envie-me o PIX.`;
+        window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
+    } else {
+        alert("Depósito mínimo de R$ 60,00");
+    }
+};
+
 window.copiarLink = () => { document.getElementById('link-afiliado').select(); document.execCommand("copy"); alert("Link copiado!"); };
 
-// SUPORTE REATIVADO NO NOVO NÚMERO
+// SUPORTE 24H COM NÚMERO ATUALIZADO
 window.chamarSuporte = () => {
     const msg = "Olá! Gostaria de um atendimento VIP na JN LUXS INVEST.";
     window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
