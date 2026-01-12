@@ -1,135 +1,16 @@
-/* ESTILO GERAL DO PAINEL */
-body {
-    background-color: #0d0d0d;
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
-#caixa-principal {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    background: #1a1a1a;
-    min-height: 100vh;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
+body { background: #0d0d0d; color: white; font-family: sans-serif; margin: 0; display: flex; justify-content: center; }
+#caixa-principal { width: 100%; max-width: 400px; padding: 20px; background: #1a1a1a; min-height: 100vh; }
 h1, h2, h3 { text-align: center; color: #00ff88; }
+.cartao-saldo { background: #111; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #00ff88; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,255,136,0.3); }
+.bloco-acao { background: #252525; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #333; }
+input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #444; background: #111; color: white; box-sizing: border-box; }
+button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; background: #00ff88; color: #000; cursor: pointer; }
+.lista-planos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.plano { background: #111; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #444; }
+.lucro { color: #00ff88; font-weight: bold; font-size: 13px; }
 
-/* CARTÃO DE SALDO NEON */
-.cartao-saldo {
-    background: linear-gradient(145deg, #111, #222);
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    border: 1px solid #00ff88;
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-    margin-bottom: 20px;
-}
-
-.cartao-saldo h3 { font-size: 32px; margin: 10px 0; color: #fff; }
-
-/* BLOCOS DE AÇÃO */
-.bloco-acao {
-    background: #252525;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #333;
-}
-
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background: #111;
-    color: white;
-    box-sizing: border-box;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    background: #00ff88;
-    color: #000;
-    transition: 0.3s;
-}
-
-button:hover { opacity: 0.8; }
-
-/* LISTA DE PLANOS */
-.lista-planos {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.plano {
-    background: #111;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    border: 1px solid #444;
-}
-
-.plano.destaque { border-color: #d4af37; }
-.lucro { color: #00ff88; font-weight: bold; font-size: 14px; }
-
-/* === NOVA TELA BRANCA (MODAL PIX) === */
-.modal-pix {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.9);
-}
-
-.conteudo-pix {
-    background-color: white;
-    margin: 15% auto;
-    padding: 25px;
-    width: 85%;
-    max-width: 350px;
-    border-radius: 20px;
-    text-align: center;
-    color: black;
-    animation: surgir 0.3s ease;
-}
-
-@keyframes surgir {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.chave-destaque {
-    background: #f0f0f0;
-    padding: 15px;
-    display: block;
-    margin: 15px 0;
-    word-break: break-all;
-    font-size: 14px;
-    border: 2px dashed #25d366;
-    border-radius: 10px;
-    color: #333;
-    font-weight: bold;
-}
-
-.btn-ok-pix {
-    background: #25d366;
-    color: white;
-    font-size: 16px;
-    margin-top: 15px;
-}
+/* MODAL PIX (TELA BRANCA) */
+.modal-pix { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+.conteudo-pix { background: white; margin: 15% auto; padding: 25px; width: 85%; max-width: 350px; border-radius: 20px; text-align: center; color: black; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+.chave-destaque { background: #f0f0f0; padding: 15px; display: block; margin: 10px 0; word-break: break-all; border: 2px dashed #25d366; font-weight: bold; border-radius: 10px; color: #333; }
+.btn-ok-pix { background: #25d366; color: white; margin-top: 10px; font-size: 15px; }
