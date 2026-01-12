@@ -52,7 +52,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('link-afiliado').value = window.location.origin + window.location.pathname + "?ref=" + user.uid;
         
         onValue(ref(db, 'usuarios/' + user.uid), (snap) => {
-            dadosUser = snap.val();
+            dadosUser = snap.val() || {};
             document.getElementById('valor-saldo').innerText = "R$ " + (dadosUser.saldo || 0).toFixed(2);
             if(dadosUser.comprouPlano) {
                 document.getElementById('area-contador').style.display = 'block';
@@ -72,8 +72,10 @@ function iniciarContador() {
     const minutos = Math.floor((tempoRestante % 3600000) / 60000);
     const segundos = Math.floor((tempoRestante % 60000) / 1000);
     
-    document.getElementById('contador-tempo').innerText = 
-        `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+    const contadorElem = document.getElementById('contador-tempo');
+    if (contadorElem) {
+        contadorElem.innerText = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+    }
 
     if (tempoRestante <= 0) {
         processarRendimento();
@@ -84,26 +86,31 @@ function iniciarContador() {
 
 async function processarRendimento() {
     if (!usuarioAtual || !dadosUser.rendimentoDiario) return;
-    const novoSaldo = dadosUser.saldo + dadosUser.rendimentoDiario;
+    const novoSaldo = (dadosUser.saldo || 0) + dadosUser.rendimentoDiario;
     await update(ref(db, 'usuarios/' + usuarioAtual.uid), { 
         saldo: novoSaldo, ultimaAtualizacao: Date.now() 
     });
 }
 
+// FUNÇÃO DE SAQUE SEM TRAVA DE DEPÓSITO/PLANO
 window.sacar = () => {
+    // Pegando os IDs conforme aparecem na sua tela de Solicitar Saque PIX
     const nome = document.getElementById('saque-nome').value;
     const tipo = document.getElementById('saque-tipo-chave').value;
     const chave = document.getElementById('saque-chave').value;
     const valor = parseFloat(document.getElementById('valor-saque').value);
 
-    if (!nome || !chave || !valor) { alert("Preencha todos os campos de saque!"); return; }
+    if (!nome || !chave || !valor) { 
+        alert("Preencha todos os campos de saque!"); 
+        return; 
+    }
 
-    if (!dadosUser.depositou || !dadosUser.comprouPlano) {
-        alert("Erro: Para sacar o saldo de bônus, você só saca se comprar o produto e ter depositado!");
-    } else if (valor > dadosUser.saldo) {
+    // Mantida apenas a trava de saldo real disponível
+    if (valor > (dadosUser.saldo || 0)) {
         alert("Saldo insuficiente!");
     } else {
         const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
+        // Enviando para o seu novo número atualizado
         window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
     }
 };
@@ -113,15 +120,15 @@ window.comprarPlano = async (custo, rend) => {
         await update(ref(db, 'usuarios/' + usuarioAtual.uid), { 
             saldo: dadosUser.saldo - custo, rendimentoDiario: rend, ultimaAtualizacao: Date.now(), comprouPlano: true 
         });
-        alert("Plano DIAMANTE ativado!");
+        alert("Plano ativado com sucesso!");
     } else { alert("Saldo insuficiente!"); }
 };
 
-window.depositar = () => { /* Mantém lógica anterior de Pix */ };
+window.depositar = () => { /* Sua lógica de PIX aqui */ };
 window.copiarLink = () => { document.getElementById('link-afiliado').select(); document.execCommand("copy"); alert("Link copiado!"); };
 
+// SUPORTE REATIVADO NO NOVO NÚMERO
 window.chamarSuporte = () => {
     const msg = "Olá! Gostaria de um atendimento VIP na JN LUXS INVEST.";
     window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
 };
-
