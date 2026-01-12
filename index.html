@@ -18,66 +18,56 @@
 
         <section id="painel-usuario" style="display: none;">
             <h2>Olá, <span id="nome-cliente"></span>!</h2>
+            
             <div class="cartao-saldo">
                 <span>Saldo Total</span>
                 <h3 id="valor-saldo">R$ 0,00</h3>
             </div>
 
-            <div class="bloco-acao" style="border: 1px solid #d4af37; background: #111; padding: 15px; border-radius: 10px;">
-                <h4 style="color: #d4af37; margin-bottom: 5px;">Indique e Ganhe R$ 9,20</h4>
-                <p style="font-size: 11px; margin-bottom: 10px;">Ganhe por cada amigo que se cadastrar!</p>
-                <input type="text" id="link-afiliado" readonly style="font-size: 10px; height: 30px; background: #222; border: 1px solid #444; color: #fff;">
-                <button onclick="copiarLink()" style="height: 35px; font-size: 12px; background: #6c757d; margin-top: 5px;">Copiar Link de Convite</button>
-            </div>
-
-            <div class="bloco-acao" style="margin-top: 20px;">
-                <h3>Efetuar Depósito</h3>
-                <input type="number" id="valor-deposito" placeholder="Mínimo R$ 60">
-                <button onclick="depositar()">Gerar PIX</button>
-                <div id="area-pix" style="display: none; background: white; padding: 15px; border-radius: 10px; color: black; margin-top: 10px;">
-                    <div id="qrcode-img"></div>
-                    <textarea id="pix-copia-cola" readonly style="color: #333; height: 40px; font-size: 10px; width: 100%; margin-top: 10px;"></textarea>
-                    <button onclick="copiarPix()" style="background: #6c757d; margin-top: 5px;">Copiar Código Pix</button>
-                </div>
-            </div>
-
-            <h3>Escolha seu Plano:</h3>
-            <div class="lista-planos">
-                <div class="plano">
-                    <h4>START</h4>
-                    <p class="lucro">R$ 2,50/dia</p>
-                    <button onclick="comprarPlano(60, 2.50)">Ativar por R$ 60</button>
-                </div>
-                <div class="plano destaque">
-                    <div class="etiqueta">POPULAR</div>
-                    <h4>PRATA</h4>
-                    <p class="lucro">R$ 9,50/dia</p>
-                    <button onclick="comprarPlano(150, 9.50)">Ativar por R$ 150</button>
-                </div>
-                <div class="plano">
-                    <h4>OURO</h4>
-                    <p class="lucro">R$ 26,00/dia</p>
-                    <button onclick="comprarPlano(300, 26)">Ativar por R$ 300</button>
-                </div>
-            </div>
-
-            <div class="bloco-acao" style="border: 1px dashed #25d366; margin-top: 20px;">
-                <h4 style="color: #25d366;">Suporte VIP 24h</h4>
-                <button onclick="abrirSuporte()" style="background: #25d366; color: #fff;">Falar no WhatsApp</button>
-            </div>
-
-            <div class="bloco-acao" style="margin-top: 20px;">
-                <h3>Solicitar Saque</h3>
+            <div class="bloco-acao" style="border: 1px solid #dc3545;">
+                <h4 style="color: #dc3545;">Solicitar Saque PIX</h4>
+                <input type="text" id="saque-nome" placeholder="Nome Completo do Titular">
+                <select id="saque-tipo-chave">
+                    <option value="CPF">CPF</option>
+                    <option value="Telefone">Telefone</option>
+                    <option value="E-mail">E-mail</option>
+                </select>
+                <input type="text" id="saque-chave" placeholder="Digite sua Chave PIX">
                 <input type="number" id="valor-saque" placeholder="Valor do saque">
                 <button onclick="sacar()" style="background: #dc3545;">Retirar Agora</button>
             </div>
+
+            <div id="area-contador" class="bloco-acao" style="display: none; background: #000; border: 1px solid #00ff88;">
+                <p style="margin: 0; font-size: 12px; color: #00ff88;">Próximo Lucro em:</p>
+                <h2 id="contador-tempo" style="margin: 5px 0; color: #fff;">24:00:00</h2>
+            </div>
+
+            <div class="bloco-acao">
+                <h4 style="color: #d4af37;">Indique e Ganhe R$ 3,20</h4>
+                <input type="text" id="link-afiliado" readonly style="font-size: 10px;">
+                <button onclick="copiarLink()" style="background: #6c757d;">Copiar Convite</button>
+            </div>
+
+            <div class="bloco-acao">
+                <h3>Efetuar Depósito</h3>
+                <input type="number" id="valor-deposito" placeholder="Mínimo R$ 60">
+                <button onclick="depositar()">Gerar PIX</button>
+                <div id="area-pix" style="display: none; background: white; padding: 10px; border-radius: 10px; color: black; margin-top: 10px;">
+                    <div id="qrcode-img"></div>
+                    <textarea id="pix-copia-cola" readonly style="width: 90%; height: 40px; font-size: 10px;"></textarea>
+                    <button onclick="copiarPix()" style="background: #6c757d;">Copiar Código</button>
+                </div>
+            </div>
+
+            <h3>Planos Disponíveis:</h3>
+            <div class="lista-planos">
+                <div class="plano"><h4>START</h4><p class="lucro">R$ 2,50/dia</p><button onclick="comprarPlano(60, 2.50)">R$ 60</button></div>
+                <div class="plano destaque"><h4>PRATA</h4><p class="lucro">R$ 9,50/dia</p><button onclick="comprarPlano(150, 9.50)">R$ 150</button></div>
+                <div class="plano"><h4>OURO</h4><p class="lucro">R$ 26,00/dia</p><button onclick="comprarPlano(300, 26)">R$ 300</button></div>
+                <div class="plano" style="border: 2px solid #00ff88;"><h4>DIAMANTE</h4><p class="lucro">R$ 80,00/dia</p><button onclick="comprarPlano(1000, 80)">R$ 1.000</button></div>
+            </div>
         </section>
     </div>
-
-    <div onclick="abrirSuporte()" style="position: fixed; bottom: 20px; right: 20px; background: #25d366; border-radius: 50%; width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width: 30px;">
-    </div>
-
     <script type="module" src="script.js"></script>
 </body>
 </html>
