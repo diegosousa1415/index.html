@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getDatabase, ref, set, get, update, onValue, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+import { getDatabase, ref, set, update, onValue, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyC9itAsl1TKllIoVmhCq0KNDiJ4OanaPLw",
@@ -18,29 +18,17 @@ const db = getDatabase(app);
 let usuarioAtual = null;
 let dadosUser = {};
 
-async function obterIP() {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        return data.ip;
-    } catch { return "Não identificado"; }
-}
-
 window.entrarOuCadastrar = async function() {
     const email = document.getElementById('campo-email').value;
     const senha = document.getElementById('campo-senha').value;
-    if(!email || !senha) { alert("Preencha e-mail e senha"); return; }
-    
-    const ip = await obterIP();
     const params = new URLSearchParams(window.location.search);
     const indicadoPor = params.get('ref');
 
     signInWithEmailAndPassword(auth, email, senha).catch(() => {
         return createUserWithEmailAndPassword(auth, email, senha).then((res) => {
             set(ref(db, 'usuarios/' + res.user.uid), { 
-                email, saldo: 0, rendimentoDiario: 0, depositou: false, comprouPlano: false, ip: ip 
+                email, saldo: 0, rendimentoDiario: 0, comprouPlano: false 
             });
-            // VALOR DE INDICAÇÃO ATUALIZADO PARA R$ 18,40
             if(indicadoPor) update(ref(db, 'usuarios/' + indicadoPor), { saldo: increment(18.40) });
         });
     }).catch(e => alert("Erro: " + e.message));
@@ -52,76 +40,52 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('tela-login').style.display = 'none';
         document.getElementById('painel-usuario').style.display = 'block';
         document.getElementById('link-afiliado').value = window.location.origin + window.location.pathname + "?ref=" + user.uid;
-        
         onValue(ref(db, 'usuarios/' + user.uid), (snap) => {
             dadosUser = snap.val() || {};
             document.getElementById('valor-saldo').innerText = "R$ " + (dadosUser.saldo || 0).toFixed(2);
-            if(dadosUser.comprouPlano) {
-                document.getElementById('area-contador').style.display = 'block';
-                iniciarContador();
-            }
+            if(dadosUser.comprouPlano) { document.getElementById('area-contador').style.display = 'block'; iniciarContador(); }
         });
     }
 });
 
 function iniciarContador() {
-    const agora = Date.now();
-    const ultima = dadosUser.ultimaAtualizacao || agora;
-    const tempoPassado = agora - ultima;
-    const tempoRestante = Math.max(0, 86400000 - tempoPassado);
-
-    const horas = Math.floor(tempoRestante / 3600000);
-    const minutos = Math.floor((tempoRestante % 3600000) / 60000);
-    const segundos = Math.floor((tempoRestante % 60000) / 1000);
-    
-    const contadorElem = document.getElementById('contador-tempo');
-    if (contadorElem) {
-        contadorElem.innerText = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-    }
-
-    if (tempoRestante <= 0 && dadosUser.comprouPlano) {
-        processarRendimento();
-    } else {
-        setTimeout(iniciarContador, 1000);
-    }
+    const tempoRestante = Math.max(0, 86400000 - (Date.now() - (dadosUser.ultimaAtualizacao || Date.now())));
+    const h = Math.floor(tempoRestante / 3600000);
+    const m = Math.floor((tempoRestante % 3600000) / 60000);
+    const s = Math.floor((tempoRestante % 60000) / 1000);
+    const elem = document.getElementById('contador-tempo');
+    if (elem) elem.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    if (tempoRestante <= 0) processarRendimento(); else setTimeout(iniciarContador, 1000);
 }
 
 async function processarRendimento() {
     if (!usuarioAtual || !dadosUser.rendimentoDiario) return;
-    const novoSaldo = (dadosUser.saldo || 0) + dadosUser.rendimentoDiario;
     await update(ref(db, 'usuarios/' + usuarioAtual.uid), { 
-        saldo: novoSaldo, ultimaAtualizacao: Date.now() 
+        saldo: (dadosUser.saldo || 0) + dadosUser.rendimentoDiario, ultimaAtualizacao: Date.now() 
     });
 }
 
 window.sacar = () => {
-    const nome = document.getElementById('saque-nome').value;
-    const tipo = document.getElementById('saque-tipo-chave').value;
-    const chave = document.getElementById('saque-chave').value;
     const valor = parseFloat(document.getElementById('valor-saque').value);
-
-    if (!nome || !chave || !valor) { alert("Preencha todos os campos!"); return; }
     if (valor > (dadosUser.saldo || 0)) { alert("Saldo insuficiente!"); return; }
-
-    const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
+    const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}.\nNome: ${document.getElementById('saque-nome').value}\nChave: ${document.getElementById('saque-chave').value}`;
     window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
 };
 
 window.depositar = () => {
-    const campoValor = document.getElementById('valor-deposito');
-    const valor = parseFloat(campoValor.value);
-    const chavePix = "adc98ef9-90d1-4851-ab20-e9cee3a2d9a4";
-
+    const valor = parseFloat(document.getElementById('valor-deposito').value);
     if (valor >= 60) {
-        navigator.clipboard.writeText(chavePix).then(() => {
-            alert("CHAVE PIX COPIADA!\n\n1. Pague R$ " + valor.toFixed(2) + " no seu banco.\n2. Após pagar, clique em OK para enviar o comprovante.");
-            const msg = `Olá! Fiz um depósito de R$ ${valor.toFixed(2)}. Segue o comprovante para ativar meu saldo.`;
-            // SÓ ABRE O WHATSAPP DEPOIS DO OK DO ALERT
-            window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
+        navigator.clipboard.writeText("adc98ef9-90d1-4851-ab20-e9cee3a2d9a4").then(() => {
+            window.valorAtualDeposito = valor;
+            document.getElementById('meuModalPix').style.display = "block";
         });
-    } else {
-        alert("Mínimo R$ 60,00");
-    }
+    } else { alert("Mínimo R$ 60,00"); }
+};
+
+window.fecharModalEIrProWhats = () => {
+    document.getElementById('meuModalPix').style.display = "none";
+    const msg = `Olá! Fiz um depósito de R$ ${window.valorAtualDeposito.toFixed(2)}. Segue o comprovante.`;
+    window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
 };
 
 window.comprarPlano = async (custo, rend) => {
@@ -133,14 +97,8 @@ window.comprarPlano = async (custo, rend) => {
     } else { alert("Saldo insuficiente!"); }
 };
 
-window.copiarLink = () => { 
-    const link = document.getElementById('link-afiliado');
-    link.select(); 
-    document.execCommand("copy"); 
-    alert("Link copiado!"); 
-};
+window.copiarLink = () => { const link = document.getElementById('link-afiliado'); link.select(); document.execCommand("copy"); alert("Link copiado!"); };
 
 window.chamarSuporte = () => {
-    const msg = "Olá! Gostaria de um atendimento VIP na JN LUXS INVEST.";
-    window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
+    window.open(`https://wa.me/5589994713178?text=${encodeURIComponent("Olá! Preciso de suporte na JN LUXS INVEST.")}`);
 };
