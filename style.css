@@ -1,120 +1,47 @@
-/* FUNDO ESTILO COLMEIA NEON */
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    /* Cor de fundo base roxo escuro */
-    background-color: #0f0221;
-    /* Padrão de Hexágonos via CSS */
-    background-image: 
-        radial-gradient(circle at center, rgba(89, 0, 255, 0.2) 0%, transparent 70%),
-        linear-gradient(30deg, #12022b 12%, transparent 12.5%, transparent 87%, #12022b 87.5%, #12022b),
-        linear-gradient(-30deg, #12022b 12%, transparent 12.5%, transparent 87%, #12022b 87.5%, #12022b),
-        linear-gradient(30deg, #12022b 12%, transparent 12.5%, transparent 87%, #12022b 87.5%, #12022b),
-        linear-gradient(-30deg, #12022b 12%, transparent 12.5%, transparent 87%, #12022b 87.5%, #12022b),
-        linear-gradient(60deg, #1a0442 25%, transparent 25.5%, transparent 75%, #1a0442 75.5%, #1a0442), 
-        linear-gradient(60deg, #1a0442 25%, transparent 25.5%, transparent 75%, #1a0442 75.5%, #1a0442);
-    background-size: 80px 140px;
-    background-position: 0 0, 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
-}
-
-/* CAIXA PRINCIPAL DO SITE */
-#caixa-principal {
-    width: 90%;
-    max-width: 420px;
-    background: rgba(15, 5, 40, 0.95); /* Roxo bem escuro com transparência */
-    padding: 25px;
-    border-radius: 25px;
-    border: 2px solid #5900ff; /* Borda Neon */
-    box-shadow: 0 0 20px rgba(89, 0, 255, 0.4);
-    text-align: center;
-    color: white;
-    backdrop-filter: blur(10px); /* Efeito de vidro embaçado */
-}
-
-/* TÍTULO DOURADO PARA CONTRASTAR COM O ROXO */
-h1 {
-    color: #d4af37;
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-
-/* CARTÃO DE SALDO */
-.cartao-saldo {
-    background: linear-gradient(135deg, #5900ff 0%, #a200ff 100%);
-    padding: 20px;
-    border-radius: 15px;
-    margin: 15px 0;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.cartao-saldo h3 {
-    font-size: 32px;
-    margin: 5px 0;
-}
-
-/* BOTÕES ESTILO PREMIUM */
-button {
+.modal-pix {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
     width: 100%;
-    padding: 14px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.conteudo-pix {
+    background-color: white;
+    margin: 15% auto;
+    padding: 25px;
+    width: 85%;
+    max-width: 400px;
+    border-radius: 20px;
+    text-align: center;
+    color: black;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.chave-destaque {
+    background: #f0f0f0;
+    padding: 12px;
+    display: block;
+    margin: 15px 0;
+    word-break: break-all;
+    font-size: 13px;
+    border: 1px dashed #25d366;
+    color: #333;
+    font-weight: bold;
+}
+
+.btn-ok-pix {
+    background: #25d366;
+    color: white;
     border: none;
-    border-radius: 10px;
-    background: linear-gradient(to right, #d4af37, #fcf6ba, #b38728);
-    color: #000;
+    padding: 15px;
+    border-radius: 12px;
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-}
-
-/* BLOCOS DE AÇÃO (AFILIADOS, DEPÓSITO, ETC) */
-.bloco-acao {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 15px;
-    border: 1px solid #333;
-}
-
-/* INPUTS */
-input {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #5900ff;
-    background: #000;
-    color: #fff;
-    box-sizing: border-box;
-}
-
-/* PLANOS */
-.plano {
-    background: rgba(89, 0, 255, 0.1);
-    border: 1px solid #5900ff;
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-}
-
-.plano.destaque {
-    background: rgba(212, 175, 55, 0.1);
-    border: 2px solid #d4af37;
-}
-
-.lucro {
-    color: #00ff88; /* Verde neon para o lucro */
-    font-weight: bold;
-    font-size: 18px;
+    margin-top: 10px;
 }
