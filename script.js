@@ -104,7 +104,7 @@ window.sacar = () => {
         alert("Saldo insuficiente!");
     } else {
         const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}. \nNome: ${nome}\nChave ${tipo}: ${chave}`;
-        window.open(`https://wa.me/5589994222704?text=${encodeURIComponent(msg)}`);
+        window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
     }
 };
 
