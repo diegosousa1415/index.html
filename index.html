@@ -19,11 +19,19 @@
         </section>
 
         <section id="painel-usuario" style="display: none;">
-            <h2>Olá,BEM VINDO PRONTO PRA LUCRAR?!<span id="nome-cliente"></span>!</h2>
+            <h2>Olá, <span id="nome-cliente"></span>!</h2>
+            <p>BEM VINDO PRONTO PRA LUCRAR?</p>
             
             <div class="cartao-saldo">
-                <span>Seu Saldo Atual</span>
+                <span>Seu Saldo Disponível</span>
                 <h3 id="valor-saldo">R$ 0,00</h3>
+            </div>
+
+            <div class="bloco-acao" style="background: #222; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h3>Efetuar Depósito</h3>
+                <p style="font-size: 12px; color: #aaa;">Mínimo: R$ 60,00</p>
+                <input type="number" id="valor-deposito" placeholder="Valor para depósito">
+                <button onclick="depositar()" style="background: #007bff;">Gerar PIX</button>
             </div>
 
             <h3>Escolha um Plano de Investimento:</h3>
@@ -32,38 +40,46 @@
                 <div class="plano">
                     <h4>PLANO START</h4>
                     <p>Custo: <strong>R$ 60</strong></p>
-                    <p class="lucro">Rende R$ 2,00/dia</p>
-                    <button onclick="pagar(60)">Investir Agora</button>
+                    <p class="lucro">Rende R$ 2,50/dia</p>
+                    <button onclick="comprarPlano(60, 2)">Ativar Plano</button>
                 </div>
 
                 <div class="plano destaque">
                     <div class="etiqueta">POPULAR</div>
                     <h4>PLANO PRATA</h4>
                     <p>Custo: <strong>R$ 150</strong></p>
-                    <p class="lucro">Rende R$ 9.50,00/dia</p>
-                    <button onclick="pagar(150)">Investir Agora</button>
+                    <p class="lucro">Rende R$ 9.50/dia</p>
+                    <button onclick="comprarPlano(150, 9.50)">Ativar Plano</button>
                 </div>
 
                 <div class="plano">
                     <h4>PLANO OURO</h4>
                     <p>Custo: <strong>R$ 300</strong></p>
                     <p class="lucro">Rende R$ 26,00/dia</p>
-                    <button onclick="pagar(300)">Investir Agora</button>
+                    <button onclick="comprarPlano(300, 26)">Ativar Plano</button>
                 </div>
 
                 <div class="plano">
                     <h4>PLANO VIP</h4>
                     <p>Custo: <strong>R$ 600</strong></p>
                     <p class="lucro">Rende R$ 30,00/dia</p>
-                    <button onclick="pagar(600)">Investir Agora</button>
+                    <button onclick="comprarPlano(600, 30)">Ativar Plano</button>
                 </div>
 
                 <div class="plano diamante">
                     <h4>PLANO DIAMANTE</h4>
                     <p>Custo: <strong>R$ 1.000</strong></p>
                     <p class="lucro">Rende R$ 102,00/dia</p>
-                    <button onclick="pagar(1000)">Investir Agora</button>
+                    <button onclick="comprarPlano(1000, 102)">Ativar Plano</button>
                 </div>
+            </div>
+
+            <div class="bloco-acao" style="margin-top: 30px; background: #222; padding: 15px; border-radius: 10px;">
+                <h3>Solicitar Saque</h3>
+                <p style="font-size: 12px; color: #aaa;">Mínimo: R$ 20,00</p>
+                <input type="text" id="chave-pix" placeholder="Sua Chave PIX">
+                <input type="number" id="valor-saque" placeholder="Valor do saque">
+                <button onclick="sacar()" style="background: #dc3545;">Retirar Dinheiro</button>
             </div>
         </section>
     </div>
