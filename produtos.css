@@ -1,38 +1,127 @@
+/* FUNDO E BASE */
 body {
-  background: #0f1115;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  margin: 0;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: #0f0221;
+    background-image: 
+        radial-gradient(circle at center, rgba(89, 0, 255, 0.2) 0%, transparent 70%),
+        linear-gradient(30deg, #12022b 12%, transparent 12.5%, transparent 87%, #12022b 87.5%, #12022b),
+        linear-gradient(60deg, #1a0442 25%, transparent 25.5%, transparent 75%, #1a0442 75.5%, #1a0442);
+    background-size: 80px 140px;
 }
 
-.topbar {
-  padding: 16px;
-  text-align: center;
-  background: #15181f;
+#caixa-principal {
+    width: 90%;
+    max-width: 420px;
+    background: rgba(15, 5, 40, 0.95);
+    padding: 20px;
+    border-radius: 25px;
+    border: 2px solid #5900ff;
+    box-shadow: 0 0 25px rgba(89, 0, 255, 0.5);
+    text-align: center;
+    color: white;
+    backdrop-filter: blur(10px);
+    margin: 20px 0;
 }
 
-.content {
-  padding: 16px;
-  display: grid;
-  gap: 14px;
+/* CARTÃO DE SALDO */
+.cartao-saldo {
+    background: linear-gradient(135deg, #5900ff 0%, #a200ff 100%);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-.product-card {
-  background: #1a1d25;
-  padding: 18px;
-  border-radius: 16px;
+/* ESTILO DOS CAMPOS DE SAQUE (NO TOPO) */
+select {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #dc3545;
+    background: #1a0510;
+    color: white;
+    font-weight: bold;
 }
 
-.product-card span {
-  font-size: 20px;
-  font-weight: bold;
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #5900ff;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    box-sizing: border-box;
 }
 
+/* CONTADOR DE TEMPO NEON */
+#area-contador {
+    border: 2px solid #00ff88 !important;
+    box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.2), 0 0 15px rgba(0, 255, 136, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+#contador-tempo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #00ff88;
+}
+
+/* BLOCOS DE AÇÃO */
+.bloco-acao {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* BOTÕES */
 button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(90deg, #4dd0e1, #ff5fcf);
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(to right, #d4af37, #fcf6ba, #b38728);
+    color: #000;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
+}
+
+/* PLANOS */
+.plano {
+    background: rgba(89, 0, 255, 0.05);
+    border: 1px solid #5900ff;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.lucro {
+    color: #00ff88;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 5px 0;
 }
