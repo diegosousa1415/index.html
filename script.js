@@ -27,7 +27,8 @@ window.entrarOuCadastrar = async function() {
     signInWithEmailAndPassword(auth, email, senha).catch(() => {
         return createUserWithEmailAndPassword(auth, email, senha).then((res) => {
             set(ref(db, 'usuarios/' + res.user.uid), { email, saldo: 0, rendimentoDiario: 0, comprouPlano: false });
-            if(indicadoPor) update(ref(db, 'usuarios/' + indicadoPor), { saldo: increment(18.40) });
+            // VALOR DO CONVITE ATUALIZADO PARA 1.80
+            if(indicadoPor) update(ref(db, 'usuarios/' + indicadoPor), { saldo: increment(1.80) });
         });
     }).catch(e => alert("Erro: " + e.message));
 };
@@ -62,6 +63,7 @@ async function processarRendimento() {
 
 window.sacar = () => {
     const valor = parseFloat(document.getElementById('valor-saque').value);
+    if (valor < 10) { alert("Mínimo para saque: R$ 10,00"); return; }
     if (valor > (dadosUser.saldo || 0)) { alert("Saldo insuficiente!"); return; }
     const msg = `Olá, solicito saque de R$ ${valor.toFixed(2)}.\nNome: ${document.getElementById('saque-nome').value}\nChave: ${document.getElementById('saque-chave').value}`;
     window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
@@ -69,22 +71,19 @@ window.sacar = () => {
 
 window.depositar = () => {
     const valor = parseFloat(document.getElementById('valor-deposito').value);
-    if (valor >= 60) {
+    if (valor >= 5) {
         window.valorAtualDeposito = valor;
         document.getElementById('meuModalPix').style.display = "block";
-    } else { alert("Mínimo R$ 5,00"); }
+    } else { alert("Mínimo para depósito: R$ 5,00"); }
 };
 
 window.copiarChaveNoModal = () => {
-    const chave = "adc98ef9-90d1-4851-ab20-e9cee3a2d9a4";
-    navigator.clipboard.writeText(chave).then(() => {
-        alert("Chave Copiada com sucesso!");
-    });
+    navigator.clipboard.writeText("adc98ef9-90d1-4851-ab20-e9cee3a2d9a4").then(() => alert("Copiado com sucesso!"));
 };
 
 window.fecharModalEIrProWhats = () => {
     document.getElementById('meuModalPix').style.display = "none";
-    const msg = `Olá! Fiz um depósito de R$ ${window.valorAtualDeposito.toFixed(2)}. Segue comprovante.`;
+    const msg = `Olá! Depositei R$ ${window.valorAtualDeposito.toFixed(2)}. Segue comprovante.`;
     window.open(`https://wa.me/5589994713178?text=${encodeURIComponent(msg)}`);
 };
 
@@ -96,7 +95,4 @@ window.comprarPlano = async (custo, rend) => {
 };
 
 window.copiarLink = () => { document.getElementById('link-afiliado').select(); document.execCommand("copy"); alert("Link copiado!"); };
-
-window.chamarSuporte = () => {
-    window.open(`https://wa.me/5589994713178?text=${encodeURIComponent("Olá! Preciso de suporte VIP.")}`);
-};
+window.chamarSuporte = () => { window.open(`https://wa.me/5589994713178?text=Olá! Preciso de Suporte VIP JN LUXS.`); };
