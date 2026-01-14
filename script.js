@@ -72,7 +72,7 @@ window.depositar = () => {
     if (valor >= 60) {
         window.valorAtualDeposito = valor;
         document.getElementById('meuModalPix').style.display = "block";
-    } else { alert("Mínimo R$ 60,00"); }
+    } else { alert("Mínimo R$ 7,00"); }
 };
 
 window.copiarChaveNoModal = () => {
